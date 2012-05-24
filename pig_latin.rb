@@ -10,7 +10,7 @@ end
 
 
 def word_map(line)
-  line.gsub(/[a-zA-Z]+/) {|x| pig_latinize x}
+  line.gsub(/[a-zA-Z]+/) {|x| yield x}=-
   # mapped = line.split.map {|x| yield x}
   # spaces = line.scan /\s/
   # if line[0].match /s/
