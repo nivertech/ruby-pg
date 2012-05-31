@@ -1,0 +1,10 @@
+<!-- layout goes around view -->
+
+Hello from index
+<% %w[person computer desk knife].each do |noun| %>
+  <% 5.times do %>
+    <p> Hello again, mister <%= reverse_name @name %>, we have <%= pluralize 23, noun %>!</p>
+  <% end %>
+<% end %>
+
+<%= render :partial => 'mypartial' %>

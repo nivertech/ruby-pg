@@ -1,8 +1,11 @@
 class HelloController < ApplicationController
+ 
+  layout 'application' # this changes the layout
+
+  # can use helper_method to share methods from helper
   def index
-    output = "hello, #{params[:name]} from the controller at #{Time.now}"
-    output << "<br/>"
-    output << "Your reversed name is #{params[:name].reverse}\n"
-    render :text => output 
+    @name = params[:name]
+    # logger.debug "debug message"
+    # logger.warn "warning message"`
   end
 end
