@@ -1,0 +1,127 @@
+Shell:
+-----
+
+rails g resource Post first_name:text last_name:text email:text # model + migration + REST + controller
+rails g resource Post first_name:text last_name:text email:text # model + migration + REST + controller
+rails g scaffold Post first_name:text last_name:text email:text # resource + basic ui for backend
+rails g migration AddColumnsToPost phone:string                 # create a migration to add a new field to post
+createuser                                                      # creates a postgres user
+createdb                                                        # creates a postgres db
+psql -U myapp myapp_development                                 # connect to psql with user myapp and db myapp_development
+bundle exec rake db::migrate                                    # activate migrations which weren't activated yet
+bundle exec rake routes                                         # display route information
+rails db                                                        # open database console
+
+# after some property table was already created, we can try attach it to person
+rails g migrate add_person_id_to_property
+emacs *add_person_id_to_property.rb # and have def change add_column :properties, :person_id, :integer
+# in order to really attach, need to add has_one and belongs_to in model (see "Inside rails model")
+
+rails g model person_property person_id:integer property_id:integer # creates a model that will be used for attaching...
+# In new model, we write
+# validates :person_id, :presence => true, :numericality => true
+# belongs_to :person
+# belongs_to :property
+# In the other two (person and property, should do)
+# has_many :person_properties
+# has_many :people, :through => :person_properties (the opposite in property)
+
+# can also use has_and_belongs_to_many, but it doesn't allow adding extra attributes on the connection table itself
+
+# NOTE: has_many and friends and migrations don't know of each other
+
+
+Inside psql:
+-----------
+
+\? # show list of commands
+\dt # show tables
+\d # show tables and more
+\q # quit
+
+Inside routes.rb:
+----------------
+resources :people # create routes for REST, seems to include scaffold as well
+resources :photos do 
+  get 'preview', :on => :member # on a single resource /photos/NNN/preview
+  get 'stuff', :on => :collection # on all resources /photos/stuff
+ end # normal resources + preview
+
+Inside rails model:
+------------------
+
+  validates :first_name, :presence => true # whenever we do save or update_attributes, make sure that first_name is not nil and not "" (given string s, can call s.blank? or s.present?)
+
+  validates :games_played, :numericality => { :only_integer => true } # validate that games_played is an integer
+
+  @person.errors - errors that occured during save, useful for displaying to user
+
+  Can add helper methods here as well (i.e. person.full_name)
+
+  @person.changes - show what was changed and not saved
+
+  belongs_to :person - each person has N of this class (in case of 1 to 1, assume person has the link?) belongs_to has polymorphic while has_one doesn't
+
+  has_one :person - what is the difference between this and belongs_to? why do we need both and not only one of them in case only one table has link field
+
+  @person.find_by_something - query by the `something` field
+
+  before_save :x # the x method of the model will be called before .save
+  
+  The << operator saves
+
+Inside rails controller:
+-----------------------
+def index
+  @people = Person.all
+
+  respond_to do |format|
+    format.html # will return the template
+    format.json { render json: @people } # will create json
+    # decision between html and json: by suffix (Reuven says) or by Accept header (http://apidock.com/rails/ActionController/MimeResponds/InstanceMethods/respond_to)
+  end
+end
+
+before_filter :check_permissions # will run before each controller method
+Inside rails view:
+-----------------
+
+- views can use function from controller helper
+
+
+
+params[:id] # for resource URLs, i.e. http://localhost:3000/people/23, this will be the number (i.e. 23)
+
+person.save # when called more than once, will not create a new person since id was already set
+person.update_attributes(:first_name => "KUKU", :last_name => "kooki") # update fields to database
+person.update_attribute(:first_name, "KUU") # the only one that does not go through validations
+
+In template:
+
+<%= link_to 'Edit', edit_person_path(@person) %>  <!-- link to the edit_person route -->
+
+HTTP request: 
+
+_method field can be used for overriding
+
+Transaction mechanisms:
+
+optimistic locking - can be used to raise exception if someone else modified record.
+Person.transaction do # why Person? just because... it does global transaction, not only on persons table
+  blabla
+  blabla
+  p.save
+  blabla
+  kuku
+  p.update_attributes
+end
+
+Useful gem:
+
+gem 'twitter-bootstrap-rails'
+
+Inside pry:
+----------
+
+  cd person # gives access to @variables of person, as if we are inside a method of person 
+  cd .. # out of person
