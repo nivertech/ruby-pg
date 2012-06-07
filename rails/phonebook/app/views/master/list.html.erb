@@ -1,0 +1,12 @@
+<h1>Master#list</h1>
+<table style="border: 1px solid blue">
+<tbody>
+<% @phones.each do |phone| %> 
+<tr>
+<td style="border: 1px solid blue"><%= phone.id %></td>
+<td style="border: 1px solid blue"><%= phone.user %></td>
+<td style="border: 1px solid blue"><%= phone.phone %></td>
+<% end %>
+</tbody>
+</table>
+
