@@ -5,3 +5,5 @@ heroku create --stack=cedar # changes the heroku stack, needed for rails 3.0
 heroku rake db:migrate # allows you do migrate to the heroku db
 
 heroku logs -t # see what happened
+
+heroku config:add BUNDLE_WITH="development:test:staging" # reduce slug size? see also http://stackoverflow.com/questions/2911568/reduce-heroku-compiled-slug-size
