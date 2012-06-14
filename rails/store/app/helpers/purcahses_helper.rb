@@ -1,0 +1,2 @@
+module PurcahsesHelper
+end

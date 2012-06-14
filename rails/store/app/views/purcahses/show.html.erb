@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Item:</b>
+  <%= @purcahse.item %>
+</p>
+
+<p>
+  <b>Price:</b>
+  <%= @purcahse.price %>
+</p>
+
+
+<%= link_to 'Edit', edit_purcahse_path(@purcahse) %> |
+<%= link_to 'Back', purcahses_path %>
