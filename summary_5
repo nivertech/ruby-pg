@@ -1,0 +1,7 @@
+bundle exec rake db:migrate VERSION=201206blablabla # return to old migration (still causes data loss, needs down method)
+
+heroku create --stack=cedar # changes the heroku stack, needed for rails 3.0
+
+heroku rake db:migrate # allows you do migrate to the heroku db
+
+heroku logs -t # see what happened

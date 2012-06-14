@@ -82,7 +82,7 @@ def index
   end
 end
 
-before_filter :check_permissions # will run before each controller method
+before_filter :check_permissions # will run before each controller method. There are also after_filter and around_filter. The :around_filter is usually useful for measuring time.
 Inside rails view:
 -----------------
 
